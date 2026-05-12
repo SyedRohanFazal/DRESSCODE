@@ -115,6 +115,7 @@
           src="images/regenerated_image_1778599908158.png" 
           alt="DRESSCODE.PK Collection" 
           class="w-full h-full object-cover brightness-[0.7] transform scale-105"
+          onerror="handleImageError(this)"
         />
       </div>
       
@@ -249,6 +250,7 @@
                 src="images/regenerated_image_1778605859743.png" 
                 alt="DRESSCODE Studio" 
                 class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-1000"
+                onerror="handleImageError(this)"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <div class="absolute bottom-8 left-8 text-white opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
@@ -504,8 +506,8 @@
 
           const card = `
             <div class="product-card bg-white border border-gray-100 flex flex-col h-full rounded shadow-sm overflow-hidden text-left">
-              <div class="relative overflow-hidden aspect-[3/4]">
-                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+              <div class="relative overflow-hidden aspect-[3/4] bg-gray-50">
+                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" onerror="handleImageError(this)">
                 ${isDiscountActive ? `
                   <div class="absolute top-4 right-4 bg-[#C9A96E] text-white px-3 py-1 rounded-full">
                     <span class="text-[9px] font-bold uppercase tracking-widest text-[#1a1a1a]">10% OFF</span>
@@ -597,7 +599,7 @@
             count += item.quantity;
             cartItems.innerHTML += `
               <div class="flex items-center space-x-4 group animate-fade-in text-left">
-                <img src="${item.image}" class="w-20 h-24 object-cover rounded shadow-sm">
+                <img src="${item.image}" class="w-20 h-24 object-cover rounded shadow-sm" onerror="handleImageError(this)">
                 <div class="flex-grow">
                   <h4 class="text-xs font-bold uppercase tracking-widest mb-1">${item.name}</h4>
                   <div class="flex items-center space-x-3 mb-2">
@@ -782,7 +784,7 @@
             <div class="space-y-3">
               ${order.items.map(item => `
                 <div class="flex items-center space-x-3">
-                  <img src="${item.image}" class="w-10 h-12 object-cover rounded">
+                  <img src="${item.image}" class="w-10 h-12 object-cover rounded" onerror="handleImageError(this)">
                   <div class="flex-grow">
                     <p class="text-[10px] font-bold uppercase tracking-tight line-clamp-1">${item.name}</p>
                     <p class="text-[9px] text-gray-400 font-bold">Qty: ${item.quantity} | Rs. ${(item.price * item.quantity).toLocaleString()}</p>
@@ -838,6 +840,13 @@
       function toggleMobileMenu() {
         const menu = document.getElementById('mobile-menu');
         menu.classList.toggle('hidden');
+      }
+
+      function handleImageError(img) {
+        console.error("Failed to load image:", img.src);
+        // Fallback to a placeholder if the image fails
+        img.src = `https://placehold.co/600x800/f3f4f6/c9a96e?text=${encodeURIComponent(img.alt || 'Product')}`;
+        img.onerror = null; // Prevent infinite loop
       }
 
       function handleContact(e) {
