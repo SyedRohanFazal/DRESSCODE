@@ -21,13 +21,6 @@
       h1, h2, h3, .font-serif {
         font-family: 'Playfair Display', serif;
       }
-      .product-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      .product-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-      }
       .sticky-nav {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
@@ -69,17 +62,17 @@
     <nav class="sticky top-[32px] sm:top-[36px] z-50 bg-white border-b border-gray-100 py-4 shadow-sm">
       <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <!-- Logo -->
-        <a href="#" class="font-serif text-2xl font-bold tracking-tight hover:text-[#C9A96E] transition-colors">
+        <button onclick="scrollToSection('home')" class="font-serif text-2xl font-bold tracking-tight hover:text-[#C9A96E] transition-colors cursor-pointer">
           DRESSCODE
-        </a>
+        </button>
 
         <!-- Desktop Links -->
         <div class="hidden md:flex items-center space-x-8 font-bold text-[10px] tracking-[0.2em] uppercase">
-          <a href="#home" class="hover:text-[#C9A96E] transition-colors">Home</a>
-          <a href="#men" class="hover:text-[#C9A96E] transition-colors">Men</a>
-          <a href="#women" class="hover:text-[#C9A96E] transition-colors">Women</a>
-          <a href="#about" class="hover:text-[#C9A96E] transition-colors">About Us</a>
-          <a href="#contact" class="hover:text-[#C9A96E] transition-colors">Contact</a>
+          <button onclick="scrollToSection('home')" class="hover:text-[#C9A96E] transition-colors cursor-pointer">Home</button>
+          <button onclick="scrollToSection('men')" class="hover:text-[#C9A96E] transition-colors cursor-pointer">Men</button>
+          <button onclick="scrollToSection('women')" class="hover:text-[#C9A96E] transition-colors cursor-pointer">Women</button>
+          <button onclick="scrollToSection('about')" class="hover:text-[#C9A96E] transition-colors cursor-pointer">About Us</button>
+          <button onclick="scrollToSection('contact')" class="hover:text-[#C9A96E] transition-colors cursor-pointer">Contact</button>
         </div>
 
         <!-- Right Icons -->
@@ -100,22 +93,26 @@
 
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 flex flex-col items-center py-6 space-y-4 font-bold text-xs tracking-widest uppercase">
-        <a href="#home" onclick="toggleMobileMenu()">Home</a>
-        <a href="#men" onclick="toggleMobileMenu()">Men</a>
-        <a href="#women" onclick="toggleMobileMenu()">Women</a>
-        <a href="#about" onclick="toggleMobileMenu()">About Us</a>
-        <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+        <button onclick="scrollToSection('home'); toggleMobileMenu()" class="cursor-pointer">Home</button>
+        <button onclick="scrollToSection('men'); toggleMobileMenu()" class="cursor-pointer">Men</button>
+        <button onclick="scrollToSection('women'); toggleMobileMenu()" class="cursor-pointer">Women</button>
+        <button onclick="scrollToSection('about'); toggleMobileMenu()" class="cursor-pointer">About Us</button>
+        <button onclick="scrollToSection('contact'); toggleMobileMenu()" class="cursor-pointer">Contact</button>
       </div>
     </nav>
 
     <!-- 1. HOME SECTION - HERO BANNER -->
     <section id="home" class="relative h-[90vh] flex items-center justify-center overflow-hidden text-center">
       <div class="absolute inset-0">
+        <!-- 
+          IMAGE HOSTING INSTRUCTIONS:
+          To use with Google Drive, upload your image and get the ID.
+          Direct Link Format: https://lh3.googleusercontent.com/d/YOUR_FILE_ID
+        -->
         <img 
-          src="images/regenerated_image_1778599908158.png" 
+          src="https://lh3.googleusercontent.com/d/1ud-UIpM8XTLEt4SaP7aydoyPfgwMEvf5" 
           alt="DRESSCODE.PK Collection" 
-          class="w-full h-full object-cover brightness-[0.7] transform scale-105"
-          onerror="handleImageError(this)"
+          class="w-full h-full object-cover brightness-[0.7]"
         />
       </div>
       
@@ -138,9 +135,9 @@
 
         <div class="flex flex-col md:flex-row items-center justify-center gap-6">
           <!-- Main CTA -->
-          <a href="#men" class="bg-white text-[#1a1a1a] px-12 py-5 rounded font-bold uppercase tracking-[0.3em] text-xs hover:bg-[#C9A96E] hover:text-white transition-all duration-500 shadow-2xl">
+          <button onclick="scrollToSection('men')" class="bg-white text-[#1a1a1a] px-12 py-5 rounded font-bold uppercase tracking-[0.3em] text-xs hover:bg-[#C9A96E] hover:text-white transition-all duration-500 shadow-2xl cursor-pointer">
             Explore Collection
-          </a>
+          </button>
           
           <!-- DISCOUNT FEATURE BOX -->
           <div class="bg-white/5 backdrop-blur-xl p-4 border border-white/10 rounded flex items-center space-x-3 shadow-2xl">
@@ -244,19 +241,18 @@
 
           <!-- Image Side -->
           <div class="relative group">
-            <div class="absolute -inset-4 border border-gray-100 rounded z-0 transform group-hover:scale-105 transition-transform"></div>
+            <div class="absolute -inset-4 border border-gray-100 rounded z-0"></div>
             <div class="relative z-10 rounded shadow-2xl overflow-hidden aspect-[4/5]">
+              <!-- 
+                GOOGLE DRIVE REPLACEMENT:
+                Replace src with: https://lh3.googleusercontent.com/d/YOUR_FILE_ID
+              -->
               <img 
-                src="images/regenerated_image_1778605859743.png" 
+                src="https://lh3.googleusercontent.com/d/1_tm2PtZDctnn0yNCJ6jaIcHn21i2Aw-a" 
                 alt="DRESSCODE Studio" 
-                class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-1000"
-                onerror="handleImageError(this)"
+                class="w-full h-full object-cover"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div class="absolute bottom-8 left-8 text-white opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
-                <p class="text-[10px] font-bold uppercase tracking-[0.4em] mb-2 text-[#C9A96E]">Inside the Atelier</p>
-                <p class="text-lg font-serif">Curating Timeless Standards</p>
-              </div>
+
             </div>
             <!-- Decorative Element -->
             <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-[#C9A96E] -z-10 opacity-10"></div>
@@ -347,9 +343,9 @@
           <div class="space-y-6 md:text-right">
             <h3 class="text-[12px] font-bold uppercase tracking-[0.4em] text-[#C9A96E]">Customer Care</h3>
             <div class="flex flex-col space-y-4 font-bold uppercase text-[9px] tracking-[0.3em] text-gray-500">
-              <button onclick="openPolicy('shipping')" class="text-[11px] hover:text-[#C9A96E] transition-colors text-center md:text-right">Shipping Policy</button>
-              <button onclick="openPolicy('return')" class="text-[11px] hover:text-[#C9A96E] transition-colors text-center md:text-right">Return & Exchange</button>
-              <a href="#contact" class="hover:text-[#C9A96E] transition-colors font-bold uppercase text-[9px] tracking-[0.3em]">Contact Us</a>
+              <button onclick="openPolicy('shipping')" class="text-[11px] hover:text-[#C9A96E] transition-colors text-center md:text-right cursor-pointer">Shipping Policy</button>
+              <button onclick="openPolicy('return')" class="text-[11px] hover:text-[#C9A96E] transition-colors text-center md:text-right cursor-pointer">Return & Exchange</button>
+              <button onclick="scrollToSection('contact')" class="hover:text-[#C9A96E] transition-colors font-bold uppercase text-[9px] tracking-[0.3em] cursor-pointer">Contact Us</button>
             </div>
           </div>
         </div>
@@ -463,15 +459,17 @@
 
     <script>
       // Simulated Database
+      // NOTE: For Google Sites, replace the image paths below with your Direct Google Drive links
+      // Link Format: https://lh3.googleusercontent.com/d/YOUR_FILE_ID
       const products = [
-        { id: 1, name: "Classic Oxford Dress Shirt", category: "men", price: 3500, colors: ["#ADD8E6", "#000", "#FFF"], description: "The ultimate daily office essential. Crafted from 100% breathable cotton, this classic light blue Oxford shirt features a crisp button-down collar and a modern tailored fit.", image: "images/regenerated_image_1778599250139.png" },
-        { id: 2, name: "Charcoal Grey Wrinkle-Free Dress Pants", category: "men", price: 4200, colors: ["#36454F", "#000", "#808080"], description: "Maintain a sharp, professional profile. These wrinkle-resistant dress pants feature a flat front design and a sleek straight fit with a slight stretch for ease of movement.", image: "images/regenerated_image_1778599254587.png" },
-        { id: 3, name: "Premium Pique Polo Shirt", category: "men", price: 2800, colors: ["#1B2A4A", "#000", "#FFF"], description: "Elevate your smart-casual look. This sophisticated navy blue polo is cut from premium textured pique cotton for maximum breathability and a structured appearance.", image: "images/regenerated_image_1778599259083.png" },
-        { id: 4, name: "Crisp White Slim Fit Shirt", category: "men", price: 3800, colors: ["#FFF", "#F5F5DC", "#ADD8E6"], description: "Streamline your morning with this hassle-free, non-iron dress shirt. Tailored for a sleek, contemporary silhouette, providing a flawless foundation for everyday office wear.", image: "images/regenerated_image_1778599262938.png" },
-        { id: 5, name: "Striped Button-Down Office Shirt", category: "women", price: 3500, colors: ["#ADD8E6", "#FFF", "#000"], description: "A true corporate wardrobe staple. This classic light blue and white pinstripe shirt is tailored from a crisp, breathable cotton blend for a strictly professional look.", image: "images/regenerated_image_1778599732176.png" },
-        { id: 6, name: "Classic Tailored Bootcut Pants", category: "women", price: 4200, colors: ["#000", "#36454F", "#808080"], description: "The ultimate daily workwear foundation. These black dress pants feature a flattering mid-rise waist, flat front, and a subtle bootcut leg for a sharp, professional crease.", image: "images/regenerated_image_1778599736260.png" },
-        { id: 7, name: "Tie-Neck Silk-Blend Blouse", category: "women", price: 4800, colors: ["#008080", "#FFF", "#000"], description: "Sophisticated femininity for your workweek. This elegant emerald green blouse is luxurious and lightweight with a professional tie-neck (pussy-bow) detail.", image: "images/regenerated_image_1778599739525.png" },
-        { id: 8, name: "High-Waisted Wide-Leg Dress Trousers", category: "women", price: 4500, colors: ["#F5F5DC", "#000", "#808080"], description: "Modern, commanding, and incredibly comfortable. These beige wide-leg dress trousers sit high on the waist with a secure closure and flowing, elegant drape.", image: "images/regenerated_image_1778599743305.png" }
+        { id: 1, name: "Classic Oxford Dress Shirt", category: "men", price: 3500, colors: ["#ADD8E6", "#000", "#FFF"], description: "The ultimate daily office essential. Crafted from 100% breathable cotton, this classic light blue Oxford shirt features a crisp button-down collar and a modern tailored fit.", image: "https://lh3.googleusercontent.com/d/1cFSgm-POAmj_WveZno0zucMACiynBE1H" },
+        { id: 2, name: "Charcoal Grey Wrinkle-Free Dress Pants", category: "men", price: 4200, colors: ["#36454F", "#000", "#808080"], description: "Maintain a sharp, professional profile. These wrinkle-resistant dress pants feature a flat front design and a sleek straight fit with a slight stretch for ease of movement.", image: "https://lh3.googleusercontent.com/d/1g7MP7HBYSWASFsWSmjeOZyQuX1XmPnfF" },
+        { id: 3, name: "Premium Pique Polo Shirt", category: "men", price: 2800, colors: ["#1B2A4A", "#000", "#FFF"], description: "Elevate your smart-casual look. This sophisticated navy blue polo is cut from premium textured pique cotton for maximum breathability and a structured appearance.", image: "https://lh3.googleusercontent.com/d/1rYNmyGfxHFXJcKqqC1x4LDnPasjyrXYr" },
+        { id: 4, name: "Crisp White Slim Fit Shirt", category: "men", price: 3800, colors: ["#FFF", "#F5F5DC", "#ADD8E6"], description: "Streamline your morning with this hassle-free, non-iron dress shirt. Tailored for a sleek, contemporary silhouette, providing a flawless foundation for everyday office wear.", image: "https://lh3.googleusercontent.com/d/1ZZ8mKarcWnCZBd_RZIOoyoRlSYNchwmc" },
+        { id: 5, name: "Striped Button-Down Office Shirt", category: "women", price: 3500, colors: ["#ADD8E6", "#FFF", "#000"], description: "A true corporate wardrobe staple. This classic light blue and white pinstripe shirt is tailored from a crisp, breathable cotton blend for a strictly professional look.", image: "https://lh3.googleusercontent.com/d/14SjglYT8x-xR5Vm1boEr1_zFCMKmg7TT" },
+        { id: 6, name: "Classic Tailored Bootcut Pants", category: "women", price: 4200, colors: ["#000", "#36454F", "#808080"], description: "The ultimate daily workwear foundation. These black dress pants feature a flattering mid-rise waist, flat front, and a subtle bootcut leg for a sharp, professional crease.", image: "https://lh3.googleusercontent.com/d/1YWX9nwxRvg0epZeMw6bM5v1E8fAsxHce" },
+        { id: 7, name: "Tie-Neck Silk-Blend Blouse", category: "women", price: 4800, colors: ["#008080", "#FFF", "#000"], description: "Sophisticated femininity for your workweek. This elegant emerald green blouse is luxurious and lightweight with a professional tie-neck (pussy-bow) detail.", image: "https://lh3.googleusercontent.com/d/1Dp9GN6WTw9ZKX9kbAnE4KdLPW9SpHsR9" },
+        { id: 8, name: "High-Waisted Wide-Leg Dress Trousers", category: "women", price: 4500, colors: ["#F5F5DC", "#000", "#808080"], description: "Modern, commanding, and incredibly comfortable. These beige wide-leg dress trousers sit high on the waist with a secure closure and flowing, elegant drape.", image: "https://lh3.googleusercontent.com/d/1mzAzWm4cxG6yJIzsFoqJWjWe9wzoDA1p" }
       ];
 
       let cart = [];
@@ -506,8 +504,8 @@
 
           const card = `
             <div class="product-card bg-white border border-gray-100 flex flex-col h-full rounded shadow-sm overflow-hidden text-left">
-              <div class="relative overflow-hidden aspect-[3/4] bg-gray-50">
-                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" onerror="handleImageError(this)">
+              <div class="relative overflow-hidden aspect-[3/4]">
+                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
                 ${isDiscountActive ? `
                   <div class="absolute top-4 right-4 bg-[#C9A96E] text-white px-3 py-1 rounded-full">
                     <span class="text-[9px] font-bold uppercase tracking-widest text-[#1a1a1a]">10% OFF</span>
@@ -599,7 +597,7 @@
             count += item.quantity;
             cartItems.innerHTML += `
               <div class="flex items-center space-x-4 group animate-fade-in text-left">
-                <img src="${item.image}" class="w-20 h-24 object-cover rounded shadow-sm" onerror="handleImageError(this)">
+                <img src="${item.image}" class="w-20 h-24 object-cover rounded shadow-sm">
                 <div class="flex-grow">
                   <h4 class="text-xs font-bold uppercase tracking-widest mb-1">${item.name}</h4>
                   <div class="flex items-center space-x-3 mb-2">
@@ -784,7 +782,7 @@
             <div class="space-y-3">
               ${order.items.map(item => `
                 <div class="flex items-center space-x-3">
-                  <img src="${item.image}" class="w-10 h-12 object-cover rounded" onerror="handleImageError(this)">
+                  <img src="${item.image}" class="w-10 h-12 object-cover rounded">
                   <div class="flex-grow">
                     <p class="text-[10px] font-bold uppercase tracking-tight line-clamp-1">${item.name}</p>
                     <p class="text-[9px] text-gray-400 font-bold">Qty: ${item.quantity} | Rs. ${(item.price * item.quantity).toLocaleString()}</p>
@@ -842,18 +840,18 @@
         menu.classList.toggle('hidden');
       }
 
-      function handleImageError(img) {
-        console.error("Failed to load image:", img.src);
-        // Fallback to a placeholder if the image fails
-        img.src = `https://placehold.co/600x800/f3f4f6/c9a96e?text=${encodeURIComponent(img.alt || 'Product')}`;
-        img.onerror = null; // Prevent infinite loop
+      function scrollToSection(id) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }
 
       function handleContact(e) {
         e.preventDefault();
         
         // Go to Home (Top)
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        scrollToSection('home');
 
         // Show Toast
         showNotification("Sent", "Inquiry submitted successfully");
