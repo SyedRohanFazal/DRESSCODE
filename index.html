@@ -1,0 +1,858 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DRESSCODE | Premium Formal Wear</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (via Play CDN for simplicity in single-file) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* ========== PRESENTATION LAYER (Frontend / UI Layer) ========== */
+      :root {
+        --brand-accent: #C9A96E;
+        --brand-dark: #1a1a1a;
+      }
+      body {
+        font-family: 'Lato', sans-serif;
+        scroll-behavior: smooth;
+      }
+      h1, h2, h3, .font-serif {
+        font-family: 'Playfair Display', serif;
+      }
+      .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .sticky-nav {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+      }
+      .cart-sidebar {
+        transition: transform 0.3s ease-in-out;
+        transform: translateX(100%);
+      }
+      .cart-sidebar.open {
+        transform: translateX(0);
+      }
+      #promo-message.success { color: #ffffff; }
+      #promo-message.error { color: #dc2626; }
+      
+      @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .animate-scale-in {
+        animation: scaleIn 0.3s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-[#1a1a1a]">
+
+    <!-- ANNOUNCEMENT BAR -->
+    <div class="bg-[#C9A96E] text-white py-2 px-4 text-center text-xs sm:text-sm font-bold uppercase tracking-widest fixed top-0 w-full z-[100]">
+      Enjoy free shipping on orders above Rs. 10,000!
+    </div>
+
+    <!-- NAVIGATION BAR -->
+    <nav class="sticky top-[32px] sm:top-[36px] z-50 bg-white border-b border-gray-100 py-4 shadow-sm">
+      <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="#" class="font-serif text-2xl font-bold tracking-tight hover:text-[#C9A96E] transition-colors">
+          DRESSCODE
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center space-x-8 font-bold text-[10px] tracking-[0.2em] uppercase">
+          <a href="#home" class="hover:text-[#C9A96E] transition-colors">Home</a>
+          <a href="#men" class="hover:text-[#C9A96E] transition-colors">Men</a>
+          <a href="#women" class="hover:text-[#C9A96E] transition-colors">Women</a>
+          <a href="#about" class="hover:text-[#C9A96E] transition-colors">About Us</a>
+          <a href="#contact" class="hover:text-[#C9A96E] transition-colors">Contact</a>
+        </div>
+
+        <!-- Right Icons -->
+        <div class="flex items-center space-x-4">
+          <button onclick="toggleOrders()" class="relative p-2 hover:text-[#C9A96E] transition-colors duration-200 group">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-[#1a1a1a] text-white text-[8px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest font-bold">Orders</span>
+          </button>
+          <button onclick="toggleCart()" class="relative p-2 hover:text-[#C9A96E] transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-[#C9A96E] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-sm">0</span>
+          </button>
+          <button class="md:hidden" onclick="toggleMobileMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 flex flex-col items-center py-6 space-y-4 font-bold text-xs tracking-widest uppercase">
+        <a href="#home" onclick="toggleMobileMenu()">Home</a>
+        <a href="#men" onclick="toggleMobileMenu()">Men</a>
+        <a href="#women" onclick="toggleMobileMenu()">Women</a>
+        <a href="#about" onclick="toggleMobileMenu()">About Us</a>
+        <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+      </div>
+    </nav>
+
+    <!-- 1. HOME SECTION - HERO BANNER -->
+    <section id="home" class="relative h-[90vh] flex items-center justify-center overflow-hidden text-center">
+      <div class="absolute inset-0">
+        <img 
+          src="src/assets/images/regenerated_image_1778599908158.png" 
+          alt="DRESSCODE.PK Collection" 
+          class="w-full h-full object-cover brightness-[0.7] transform scale-105"
+        />
+      </div>
+      
+      <div class="relative px-6 z-10 animate-fade-in">
+        <h1 class="text-white text-7xl md:text-9xl font-bold mb-6 tracking-tighter drop-shadow-2xl font-serif">
+          DRESSCODE
+        </h1>
+        
+        <div class="flex items-center justify-center space-x-4 mb-12">
+          <div class="h-[1px] w-12 bg-[#C9A96E]"></div>
+          <p class="text-white text-sm md:text-lg font-light tracking-[0.4em] uppercase opacity-90">
+            Formal Elegance
+          </p>
+          <div class="h-[1px] w-12 bg-[#C9A96E]"></div>
+        </div>
+
+        <p class="text-white text-[10px] md:text-xs font-bold tracking-[0.6em] uppercase opacity-50 mb-12 animate-fade-in">
+          The Art of Refined Dressing
+        </p>
+
+        <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+          <!-- Main CTA -->
+          <a href="#men" class="bg-white text-[#1a1a1a] px-12 py-5 rounded font-bold uppercase tracking-[0.3em] text-xs hover:bg-[#C9A96E] hover:text-white transition-all duration-500 shadow-2xl">
+            Explore Collection
+          </a>
+          
+          <!-- DISCOUNT FEATURE BOX -->
+          <div class="bg-white/5 backdrop-blur-xl p-4 border border-white/10 rounded flex items-center space-x-3 shadow-2xl">
+            <input 
+              type="text" 
+              id="promo-input"
+              placeholder="Promo Code" 
+              class="bg-white/10 border border-white/20 text-white placeholder-white/40 px-4 py-3 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#C9A96E] w-40 uppercase font-bold tracking-widest"
+            >
+            <button 
+              onclick="applyDiscount()"
+              class="bg-[#C9A96E] hover:bg-white hover:text-[#1a1a1a] text-white px-6 py-3 rounded font-bold transition-all duration-300 text-[10px] uppercase tracking-widest"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+        <p id="promo-message" class="mt-4 text-xs font-bold uppercase tracking-widest min-h-[1.5rem]"></p>
+      </div>
+    </section>
+
+    <!-- 2. MEN'S SECTION -->
+    <section id="men" class="py-24 px-6 max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Men's Formal Collection</h2>
+        <div class="w-24 h-0.5 bg-[#C9A96E] mx-auto"></div>
+      </div>
+      <div id="men-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <!-- Product cards injected by JS -->
+      </div>
+    </section>
+
+    <!-- 3. WOMEN'S SECTION -->
+    <section id="women" class="py-24 px-6 bg-gray-50/50 border-y border-gray-100">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6">Women's Formal Collection</h2>
+          <div class="w-24 h-0.5 bg-[#C9A96E] mx-auto"></div>
+        </div>
+        <div id="women-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <!-- Product cards injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ABOUT US SECTION -->
+    <section id="about" class="py-24 px-6 bg-white overflow-hidden">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          
+          <!-- Content Side -->
+          <div class="space-y-12 animate-fade-in">
+            <div>
+              <h3 class="text-[#C9A96E] text-[12px] font-bold uppercase tracking-[0.5em] mb-4">Our Heritage</h3>
+              <h2 class="text-[#1a1a1a] text-5xl font-serif font-bold mb-8 leading-tight tracking-tighter">
+                A Legacy of <br><span class="italic font-light">Refined Tailoring</span>
+              </h2>
+              <p class="text-gray-600 text-lg leading-relaxed font-light">
+                Founded in the vibrant heart of Karachi in 2020, DRESSCODE has dedicated itself to the art of formal dressing. We believe that a well-tailored outfit is more than just clothing; it is a statement of confidence and professional excellence.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="p-6 border border-gray-100 rounded bg-gray-50/50 group hover:border-[#C9A96E] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="2" class="mb-4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <h4 class="text-[12px] font-bold uppercase tracking-widest mb-2">Authenticity</h4>
+                <p class="text-gray-500 text-xs leading-relaxed">Sourcing the finest Italian and local fabrics for durability and comfort.</p>
+              </div>
+              <div class="p-6 border border-gray-100 rounded bg-gray-50/50 group hover:border-[#C9A96E] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A96E" stroke-width="2" class="mb-4"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 8v8"/></svg>
+                <h4 class="text-[12px] font-bold uppercase tracking-widest mb-2">Craftsmanship</h4>
+                <p class="text-gray-500 text-xs leading-relaxed">Meticulous attention to detail in every stitch and seam of our formal wear.</p>
+              </div>
+            </div>
+
+            <!-- Enhanced Information Table -->
+            <div class="border border-gray-200 rounded overflow-hidden">
+              <div class="bg-gray-100 px-6 py-4 border-b border-gray-200">
+                <h4 class="text-[11px] font-bold uppercase tracking-[0.4em] text-[#1a1a1a]">Brand Specifications</h4>
+              </div>
+              <div class="divide-y divide-gray-100">
+                <div class="flex px-6 py-4 hover:bg-gray-50 transition-colors">
+                  <span class="w-32 text-[9px] font-bold uppercase tracking-widest text-[#C9A96E]">Founded</span>
+                  <span class="text-xs font-bold text-gray-700">2020 • Karachi, Pakistan</span>
+                </div>
+                <div class="flex px-6 py-4 hover:bg-gray-50 transition-colors">
+                  <span class="w-32 text-[9px] font-bold uppercase tracking-widest text-[#C9A96E]">Specialty</span>
+                  <span class="text-xs font-bold text-gray-700">Corporate & Formal Ceremonial Wear</span>
+                </div>
+                <div class="flex px-6 py-4 hover:bg-gray-50 transition-colors">
+                  <span class="w-32 text-[9px] font-bold uppercase tracking-widest text-[#C9A96E]">Philosophy</span>
+                  <span class="text-xs font-bold text-gray-700">Quality over Quantity, Excellence in Every Cut</span>
+                </div>
+                <div class="flex px-6 py-4 hover:bg-gray-50 transition-colors">
+                  <span class="w-32 text-[9px] font-bold uppercase tracking-widest text-[#C9A96E]">Service</span>
+                  <span class="text-xs font-bold text-gray-700">7-Day Premium Exchange Policy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Side -->
+          <div class="relative group">
+            <div class="absolute -inset-4 border border-gray-100 rounded z-0 transform group-hover:scale-105 transition-transform"></div>
+            <div class="relative z-10 rounded shadow-2xl overflow-hidden aspect-[4/5]">
+              <img 
+                src="src/assets/images/regenerated_image_1778605859743.png" 
+                alt="DRESSCODE Studio" 
+                class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-1000"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div class="absolute bottom-8 left-8 text-white opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
+                <p class="text-[10px] font-bold uppercase tracking-[0.4em] mb-2 text-[#C9A96E]">Inside the Atelier</p>
+                <p class="text-lg font-serif">Curating Timeless Standards</p>
+              </div>
+            </div>
+            <!-- Decorative Element -->
+            <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-[#C9A96E] -z-10 opacity-10"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 5. CONTACT SECTION -->
+    <section id="contact" class="py-24 px-6 bg-[#1a1a1a] text-white">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold mb-4">Get In Touch</h2>
+          <p class="text-gray-400 font-light tracking-widest uppercase text-[10px]">We respond to all inquiries within 24 hours</p>
+        </div>
+
+        <form onsubmit="handleContact(event)" class="space-y-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold uppercase tracking-widest opacity-60">Full Name</label>
+              <input type="text" required class="w-full bg-white/5 border-b border-white/20 p-4 outline-none focus:border-[#C9A96E] transition-all">
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold uppercase tracking-widest opacity-60">Email Address</label>
+              <input type="email" required class="w-full bg-white/5 border-b border-white/20 p-4 outline-none focus:border-[#C9A96E] transition-all">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold uppercase tracking-widest opacity-60">Phone</label>
+              <input type="tel" required class="w-full bg-white/5 border-b border-white/20 p-4 outline-none focus:border-[#C9A96E] transition-all">
+            </div>
+            <div class="space-y-2">
+              <label class="text-[10px] font-bold uppercase tracking-widest opacity-60">Subject</label>
+              <select class="w-full bg-white/5 border-b border-white/20 p-4 outline-none focus:border-[#C9A96E] transition-all cursor-pointer text-white">
+                <option value="inquiry" class="text-black">Order Inquiry</option>
+                <option value="return" class="text-black">Return Request</option>
+                <option value="feedback" class="text-black">General Question</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold uppercase tracking-widest opacity-60">Your Message</label>
+            <textarea rows="4" required class="w-full bg-white/5 border-b border-white/20 p-4 outline-none focus:border-[#C9A96E] transition-all resize-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-white text-[#1a1a1a] font-bold py-5 rounded uppercase tracking-[0.3em] text-xs hover:bg-[#C9A96E] hover:text-white transition-all duration-300 shadow-xl text-center">
+            Submit Inquiry
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-50 py-24 px-6 border-t border-gray-100">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16 mb-20 text-center md:text-left">
+          
+          <!-- Brand Column -->
+          <div class="space-y-6">
+            <h2 class="font-serif text-3xl font-bold tracking-tighter">DRESSCODE</h2>
+            <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto md:mx-0">
+              Redefining Pakistani formal elegance since 2020. Our collection is meticulously crafted for the modern professional who values quality and timeless style.
+            </p>
+          </div>
+
+          <!-- Location Column -->
+          <div class="space-y-6">
+            <h3 class="text-[13px] font-bold uppercase tracking-[0.4em] text-[#C9A96E]">Our Presence</h3>
+            <div class="space-y-4">
+              <p class="text-xs font-bold uppercase tracking-widest">Karachi Flagship Store</p>
+              <p class="text-gray-500 text-[11px] leading-relaxed">
+                Zamzama Commercial, Phase 5<br>
+                DHA, Karachi, Pakistan
+              </p>
+              <a href="https://maps.google.com/?q=Zamzama+Commercial+Phase+5+DHA+Karachi" target="_blank" class="inline-flex items-center space-x-2 text-[9px] font-bold text-[#C9A96E] uppercase tracking-[0.2em] hover:opacity-80 transition-opacity">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span>Locate Store</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Links Column -->
+          <div class="space-y-6 md:text-right">
+            <h3 class="text-[12px] font-bold uppercase tracking-[0.4em] text-[#C9A96E]">Customer Care</h3>
+            <div class="flex flex-col space-y-4 font-bold uppercase text-[9px] tracking-[0.3em] text-gray-500">
+              <button onclick="openPolicy('shipping')" class="text-[11px] hover:text-[#C9A96E] transition-colors text-center md:text-right">Shipping Policy</button>
+              <button onclick="openPolicy('return')" class="text-[11px] hover:text-[#C9A96E] transition-colors text-center md:text-right">Return & Exchange</button>
+              <a href="#contact" class="hover:text-[#C9A96E] transition-colors font-bold uppercase text-[9px] tracking-[0.3em]">Contact Us</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="pt-12 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center gap-8">
+          <div class="flex space-x-4">
+            <a href="https://facebook.com" target="_blank" class="p-3 bg-white border border-gray-100 rounded-full hover:bg-[#C9A96E] hover:text-white transition-all shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="p-3 bg-white border border-gray-100 rounded-full hover:bg-[#C9A96E] hover:text-white transition-all shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            </a>
+            <a href="https://wa.me/923001234567" target="_blank" class="p-3 bg-white border border-gray-100 rounded-full hover:bg-[#C9A96E] hover:text-white transition-all shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 14c-.3-.2-1.8-1-2.1-1.1-.3-.1-.5-.1-.7.2-.2.3-.8 1-.9 1.1-.2.2-.4.2-.7.1-.3-.1-1.3-.5-2.4-1.5-1-.9-1.6-2-1.8-2.3-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4-.1-.5-.1-.1-.7-1.7-1-2.4-.3-.7-.6-.6-.8-.6-.2 0-.4 0-.7 0-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6 0 1.5 1.1 2.9 1.2 3.1.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4s.2-1.3.1-1.4c-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-9 14.5L2 22l5.5-1A10 10 0 1 0 12 2z"/></svg>
+            </a>
+            <a href="https://tiktok.com" target="_blank" class="p-3 bg-white border border-gray-100 rounded-full hover:bg-[#C9A96E] hover:text-white transition-all shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            </a>
+          </div>
+          <p class="text-gray-400 text-[9px] uppercase tracking-[0.5em] font-bold">
+            &copy; 2026 DRESSCODE.PK. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- CART SIDEBAR -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200] hidden transition-opacity"></div>
+    <div id="cart-sidebar" class="cart-sidebar fixed right-0 top-0 h-full w-[350px] bg-white z-[201] shadow-2xl flex flex-col">
+      <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <h2 class="text-xl font-bold uppercase tracking-widest">My Shopping Bag</h2>
+        <button onclick="toggleCart()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+      </div>
+      
+      <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-6">
+        <!-- Items will be injected here -->
+      </div>
+
+      <div class="p-6 bg-gray-50 border-t border-gray-100 space-y-4">
+        <div class="space-y-2 text-sm font-bold uppercase tracking-widest">
+          <div class="flex justify-between items-center opacity-60">
+            <span>Subtotal</span>
+            <span id="cart-subtotal">Rs. 0</span>
+          </div>
+          <div class="flex justify-between items-center opacity-60">
+            <span>Shipping</span>
+            <span id="cart-shipping">Rs. 0</span>
+          </div>
+          <div class="flex justify-between items-center pt-2 border-t border-gray-200">
+            <span>Total</span>
+            <span id="cart-total" class="text-lg">Rs. 0</span>
+          </div>
+        </div>
+        <button onclick="placeOrder()" class="w-full bg-[#1a1a1a] text-white py-4 rounded font-bold uppercase tracking-widest text-xs hover:bg-[#C9A96E] transition-colors shadow-lg">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+
+    <!-- ORDERS SIDEBAR -->
+    <div id="orders-sidebar" class="cart-sidebar fixed left-0 top-0 h-full w-[350px] bg-white z-[201] shadow-2xl flex flex-col border-r border-gray-100" style="transform: translateX(-100%);">
+      <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+        <h2 class="text-xl font-bold uppercase tracking-widest">My Order History</h2>
+        <button onclick="toggleOrders()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+      </div>
+      
+      <div id="order-history-items" class="flex-grow overflow-y-auto p-6 space-y-8">
+        <!-- Orders will be injected here -->
+      </div>
+    </div>
+
+    <!-- JS LOGIC - BUSINESS LAYER -->
+    <!-- POLICY MODAL -->
+    <div id="policy-modal" class="fixed inset-0 z-[300] hidden flex items-center justify-center p-6">
+      <div onclick="closePolicy()" class="absolute inset-0 bg-[#1a1a1a]/80 backdrop-blur-sm"></div>
+      <div class="relative bg-white w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col rounded shadow-2xl animate-scale-in">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+          <h2 id="policy-title" class="text-xl font-bold uppercase tracking-widest text-[#1a1a1a]">Policy</h2>
+          <button onclick="closePolicy()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+          </button>
+        </div>
+        <div id="policy-content" class="p-8 overflow-y-auto text-gray-600 leading-relaxed space-y-6">
+          <!-- Content injected here -->
+        </div>
+        <div class="p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
+          <button onclick="closePolicy()" class="bg-[#1a1a1a] text-white px-8 py-3 rounded font-bold uppercase tracking-widest text-[10px] hover:bg-[#C9A96E] transition-colors">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="notification-toast" class="fixed bottom-8 right-8 bg-[#1a1a1a] text-white px-8 py-4 rounded shadow-2xl z-[200] transform translate-y-20 opacity-0 transition-all duration-500 pointer-events-none">
+      <div class="flex items-center space-x-4">
+        <div class="w-8 h-8 rounded-full bg-[#C9A96E] flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="text-left">
+          <p id="toast-title" class="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60 mb-1">Success</p>
+          <p id="toast-message" class="text-xs font-bold uppercase tracking-widest">Action Completed</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simulated Database
+      const products = [
+        { id: 1, name: "Classic Oxford Dress Shirt", category: "men", price: 3500, colors: ["#ADD8E6", "#000", "#FFF"], description: "The ultimate daily office essential. Crafted from 100% breathable cotton, this classic light blue Oxford shirt features a crisp button-down collar and a modern tailored fit.", image: "src/assets/images/regenerated_image_1778599250139.png" },
+        { id: 2, name: "Charcoal Grey Wrinkle-Free Dress Pants", category: "men", price: 4200, colors: ["#36454F", "#000", "#808080"], description: "Maintain a sharp, professional profile. These wrinkle-resistant dress pants feature a flat front design and a sleek straight fit with a slight stretch for ease of movement.", image: "src/assets/images/regenerated_image_1778599254587.png" },
+        { id: 3, name: "Premium Pique Polo Shirt", category: "men", price: 2800, colors: ["#1B2A4A", "#000", "#FFF"], description: "Elevate your smart-casual look. This sophisticated navy blue polo is cut from premium textured pique cotton for maximum breathability and a structured appearance.", image: "src/assets/images/regenerated_image_1778599259083.png" },
+        { id: 4, name: "Crisp White Slim Fit Shirt", category: "men", price: 3800, colors: ["#FFF", "#F5F5DC", "#ADD8E6"], description: "Streamline your morning with this hassle-free, non-iron dress shirt. Tailored for a sleek, contemporary silhouette, providing a flawless foundation for everyday office wear.", image: "src/assets/images/regenerated_image_1778599262938.png" },
+        { id: 5, name: "Striped Button-Down Office Shirt", category: "women", price: 3500, colors: ["#ADD8E6", "#FFF", "#000"], description: "A true corporate wardrobe staple. This classic light blue and white pinstripe shirt is tailored from a crisp, breathable cotton blend for a strictly professional look.", image: "src/assets/images/regenerated_image_1778599732176.png" },
+        { id: 6, name: "Classic Tailored Bootcut Pants", category: "women", price: 4200, colors: ["#000", "#36454F", "#808080"], description: "The ultimate daily workwear foundation. These black dress pants feature a flattering mid-rise waist, flat front, and a subtle bootcut leg for a sharp, professional crease.", image: "src/assets/images/regenerated_image_1778599736260.png" },
+        { id: 7, name: "Tie-Neck Silk-Blend Blouse", category: "women", price: 4800, colors: ["#008080", "#FFF", "#000"], description: "Sophisticated femininity for your workweek. This elegant emerald green blouse is luxurious and lightweight with a professional tie-neck (pussy-bow) detail.", image: "src/assets/images/regenerated_image_1778599739525.png" },
+        { id: 8, name: "High-Waisted Wide-Leg Dress Trousers", category: "women", price: 4500, colors: ["#F5F5DC", "#000", "#808080"], description: "Modern, commanding, and incredibly comfortable. These beige wide-leg dress trousers sit high on the waist with a secure closure and flowing, elegant drape.", image: "src/assets/images/regenerated_image_1778599743305.png" }
+      ];
+
+      let cart = [];
+      let isDiscountActive = false;
+      let orders = JSON.parse(localStorage.getItem('dresscode_orders') || '[]');
+
+      function renderProducts() {
+        const menGrid = document.getElementById('men-products');
+        const womenGrid = document.getElementById('women-products');
+        
+        // Clear existing grids
+        menGrid.innerHTML = '';
+        womenGrid.innerHTML = '';
+        
+        products.forEach(p => {
+          const originalPrice = p.price;
+          const discountedPrice = Math.floor(p.price * 0.9);
+          p.currentPrice = isDiscountActive ? discountedPrice : originalPrice;
+
+          const cartItem = cart.find(item => item.id === p.id);
+          const quantityControl = cartItem ? `
+            <div class="flex items-center bg-gray-50 rounded-full px-1 py-1 border border-gray-100">
+              <button onclick="changeQuantity(${p.id}, -1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors font-bold">-</button>
+              <span class="w-6 text-center text-xs font-bold">${cartItem.quantity}</span>
+              <button onclick="changeQuantity(${p.id}, 1)" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors font-bold">+</button>
+            </div>
+          ` : `
+            <button onclick="addToCart(${p.id})" class="bg-[#1a1a1a] text-white p-3 rounded-full hover:bg-[#C9A96E] transition-all transform hover:scale-110 active:scale-95">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+            </button>
+          `;
+
+          const card = `
+            <div class="product-card bg-white border border-gray-100 flex flex-col h-full rounded shadow-sm overflow-hidden text-left">
+              <div class="relative overflow-hidden aspect-[3/4]">
+                <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                ${isDiscountActive ? `
+                  <div class="absolute top-4 right-4 bg-[#C9A96E] text-white px-3 py-1 rounded-full">
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-[#1a1a1a]">10% OFF</span>
+                  </div>
+                ` : `
+                  <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full">
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-[#C9A96E]">Formal</span>
+                  </div>
+                `}
+              </div>
+              <div class="p-6 flex flex-col flex-grow">
+                <h3 class="text-xl font-bold mb-2">${p.name}</h3>
+                <div class="flex space-x-2 mb-4">
+                  ${p.colors.map(c => `<div class="w-4 h-4 rounded-full border border-gray-100" style="background:${c}"></div>`).join('')}
+                </div>
+                <p class="text-gray-500 text-xs leading-relaxed mb-4 flex-grow">${p.description}</p>
+                <div class="mt-auto pt-6 flex items-center justify-between border-t border-gray-50">
+                  <div class="flex flex-col">
+                    ${isDiscountActive ? `
+                      <span class="text-gray-400 line-through text-xs">Rs. ${originalPrice.toLocaleString()}</span>
+                      <span class="font-bold text-[#1a1a1a]">Rs. ${discountedPrice.toLocaleString()}</span>
+                    ` : `
+                      <span class="font-bold text-[#1a1a1a]">Rs. ${originalPrice.toLocaleString()}</span>
+                    `}
+                  </div>
+                  ${quantityControl}
+                </div>
+              </div>
+            </div>
+          `;
+          if (p.category === 'men') menGrid.innerHTML += card;
+          else womenGrid.innerHTML += card;
+        });
+      }
+
+      function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        const existingItem = cart.find(item => item.id === productId);
+        
+        const priceAtAddition = isDiscountActive ? Math.floor(product.price * 0.9) : product.price;
+
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({ ...product, price: priceAtAddition, quantity: 1 });
+        }
+        
+        updateCartUI();
+        renderProducts(); // Update the grid to show new state if needed
+        toggleCart(true); 
+      }
+
+      function changeQuantity(productId, delta) {
+        const item = cart.find(i => i.id === productId);
+        if (!item) return;
+
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+          removeFromCart(productId);
+        } else {
+          updateCartUI();
+          renderProducts();
+        }
+      }
+
+      function removeFromCart(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        updateCartUI();
+        renderProducts();
+      }
+
+      function updateCartUI() {
+        const cartItems = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const cartTotal = document.getElementById('cart-total');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const cartShipping = document.getElementById('cart-shipping');
+        
+        cartItems.innerHTML = '';
+        let subtotal = 0;
+        let count = 0;
+
+        if (cart.length === 0) {
+          cartItems.innerHTML = '<div class="text-center py-20 opacity-30 text-[10px] font-bold uppercase tracking-widest">Bag is currently empty</div>';
+        } else {
+          cart.forEach(item => {
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+            count += item.quantity;
+            cartItems.innerHTML += `
+              <div class="flex items-center space-x-4 group animate-fade-in text-left">
+                <img src="${item.image}" class="w-20 h-24 object-cover rounded shadow-sm">
+                <div class="flex-grow">
+                  <h4 class="text-xs font-bold uppercase tracking-widest mb-1">${item.name}</h4>
+                  <div class="flex items-center space-x-3 mb-2">
+                    <button onclick="changeQuantity(${item.id}, -1)" class="w-6 h-6 flex items-center justify-center border border-gray-200 rounded hover:bg-gray-100 text-xs">-</button>
+                    <span class="text-[10px] font-bold">${item.quantity}</span>
+                    <button onclick="changeQuantity(${item.id}, 1)" class="w-6 h-6 flex items-center justify-center border border-gray-200 rounded hover:bg-gray-100 text-xs">+</button>
+                  </div>
+                  <p class="text-[10px] text-[#C9A96E] font-bold">Rs. ${itemTotal.toLocaleString()}</p>
+                </div>
+                <button onclick="removeFromCart(${item.id})" class="text-gray-300 hover:text-red-500 p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                </button>
+              </div>
+            `;
+          });
+        }
+
+        const shippingCost = (subtotal === 0 || subtotal >= 10000) ? 0 : 200;
+        const total = subtotal + shippingCost;
+
+        cartCount.innerText = count;
+        cartSubtotal.innerText = `Rs. ${subtotal.toLocaleString()}`;
+        cartShipping.innerText = shippingCost === 0 && subtotal > 0 ? "FREE" : `Rs. ${shippingCost.toLocaleString()}`;
+        cartTotal.innerText = `Rs. ${total.toLocaleString()}`;
+      }
+
+      function placeOrder() {
+        if (cart.length === 0) {
+          alert("Your bag is empty!");
+          return;
+        }
+
+        // Calculate final total including shipping
+        const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+        const shipping = subtotal >= 10000 ? 0 : 200;
+        const total = subtotal + shipping;
+
+        // 1. Save to Orders History
+        const newOrder = {
+          id: 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+          date: new Date().toLocaleString(),
+          items: [...cart],
+          subtotal: subtotal,
+          shipping: shipping,
+          total: total
+        };
+        orders.unshift(newOrder);
+        localStorage.setItem('dresscode_orders', JSON.stringify(orders));
+
+        // 2. Clear Cart
+        cart = [];
+        updateCartUI();
+        renderProducts();
+
+        // 3. Close Sidebar
+        toggleCart(false);
+
+        // 4. Go to Home (Top)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // 5. Show Toast
+        showNotification("Success", "Order Placed Successfully");
+
+        renderOrdersUI();
+      }
+
+      function showNotification(title, message) {
+        const toast = document.getElementById('notification-toast');
+        const titleEl = document.getElementById('toast-title');
+        const messageEl = document.getElementById('toast-message');
+
+        titleEl.innerText = title;
+        messageEl.innerText = message;
+
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('translate-y-20', 'opacity-0');
+        }, 4000);
+      }
+
+      const policyTexts = {
+        shipping: {
+          title: "Shipping Policy",
+          content: `
+            <div class="space-y-4">
+              <p class="font-bold text-[#1a1a1a]">Delivery Information</p>
+              <p>DRESSCODE.PK is committed to delivering your orders with care and efficiency. We partner with standard courier services to ensure your items reach you in perfect condition.</p>
+              
+              <p class="font-bold text-[#1a1a1a]">Shipping Rates & Timelines</p>
+              <ul class="list-disc pl-5 space-y-2">
+                <li><strong>Standard Delivery:</strong> 3 to 5 business days across Pakistan.</li>
+                <li><strong>Free Shipping:</strong> Automatically applied to all orders above Rs. 10,000.</li>
+                <li><strong>Flat Rate:</strong> A shipping fee of Rs. 200 is charged on orders below Rs. 10,000.</li>
+              </ul>
+
+              <p class="font-bold text-[#1a1a1a]">Order Tracking</p>
+              <p>Once your order is processed, you will receive a tracking number via SMS/Email to monitor your package journey. All office wear is steamed and packaged in protective covers.</p>
+              
+              <p class="text-[10px] text-gray-400 italic">Last updated: May 2026</p>
+            </div>
+          `
+        },
+        return: {
+          title: "Return & Exchange Policy",
+          content: `
+            <div class="space-y-4">
+              <p class="font-bold text-[#1a1a1a]">Hassle-Free Returns</p>
+              <p>We want you to feel confident in your DRESSCODE.PK attire. If you are not completely satisfied with your purchase, we offer a 14-day return and exchange window.</p>
+              
+              <p class="font-bold text-[#1a1a1a]">Eligibility Criteria</p>
+              <ul class="list-disc pl-5 space-y-2">
+                <li>Items must be unworn, unwashed, and in original condition.</li>
+                <li>All original tags and labels must remain attached.</li>
+                <li>Proof of purchase (invoice or order confirmation) is required.</li>
+                <li>Sale items are eligible for exchange only, subject to availability.</li>
+              </ul>
+
+              <p class="font-bold text-[#1a1a1a]">How to Return</p>
+              <p>To initiate a return, please contact our support team at support@dresscode.pk with your order number. Our team will verify the request and guide you through the doorstep pickup process (where available) or courier instructions.</p>
+              
+              <p class="text-[10px] text-gray-400 italic">Last updated: May 2026</p>
+            </div>
+          `
+        }
+      };
+
+      function openPolicy(type) {
+        const modal = document.getElementById('policy-modal');
+        const title = document.getElementById('policy-title');
+        const content = document.getElementById('policy-content');
+        
+        const policy = policyTexts[type];
+        if (policy) {
+          title.innerText = policy.title;
+          content.innerHTML = policy.content;
+          modal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+      }
+
+      function closePolicy() {
+        const modal = document.getElementById('policy-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = ''; // Restore scrolling
+      }
+
+      function toggleOrders(forceOpen = null) {
+        const sidebar = document.getElementById('orders-sidebar');
+        const overlay = document.getElementById('cart-overlay');
+        const shouldOpen = forceOpen !== null ? forceOpen : sidebar.style.transform === 'translateX(-100%)';
+        
+        if (shouldOpen) {
+          sidebar.style.transform = 'translateX(0)';
+          overlay.classList.remove('hidden');
+          renderOrdersUI();
+        } else {
+          sidebar.style.transform = 'translateX(-100%)';
+          overlay.classList.add('hidden');
+        }
+      }
+
+      function renderOrdersUI() {
+        const container = document.getElementById('order-history-items');
+        if (orders.length === 0) {
+          container.innerHTML = '<div class="text-center py-20 opacity-30 text-[10px] font-bold uppercase tracking-widest leading-relaxed">No orders placed yet.<br>Your style journey starts here.</div>';
+          return;
+        }
+
+        container.innerHTML = orders.map(order => `
+          <div class="border border-gray-100 rounded p-4 space-y-4 bg-gray-50/50">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-[10px] font-bold text-[#C9A96E] uppercase tracking-widest mb-1">${order.id}</p>
+                <p class="text-[9px] text-gray-400 uppercase font-bold">${order.date}</p>
+              </div>
+              <span class="text-[9px] bg-green-100 text-green-700 px-2 py-1 rounded font-bold uppercase tracking-widest">Confirmed</span>
+            </div>
+            
+            <div class="space-y-3">
+              ${order.items.map(item => `
+                <div class="flex items-center space-x-3">
+                  <img src="${item.image}" class="w-10 h-12 object-cover rounded">
+                  <div class="flex-grow">
+                    <p class="text-[10px] font-bold uppercase tracking-tight line-clamp-1">${item.name}</p>
+                    <p class="text-[9px] text-gray-400 font-bold">Qty: ${item.quantity} | Rs. ${(item.price * item.quantity).toLocaleString()}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="pt-3 border-t border-gray-200 flex justify-between items-center">
+              <span class="text-[9px] font-bold uppercase tracking-widest opacity-60">Amount Paid</span>
+              <span class="text-xs font-bold">Rs. ${order.total.toLocaleString()}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function toggleCart(forceOpen = null) {
+        const sidebar = document.getElementById('cart-sidebar');
+        const overlay = document.getElementById('cart-overlay');
+        const shouldOpen = forceOpen !== null ? forceOpen : !sidebar.classList.contains('open');
+        
+        if (shouldOpen) {
+          sidebar.classList.add('open');
+          overlay.classList.remove('hidden');
+        } else {
+          sidebar.classList.remove('open');
+          overlay.classList.add('hidden');
+        }
+      }
+
+      function applyDiscount() {
+        const input = document.getElementById('promo-input');
+        const msg = document.getElementById('promo-message');
+        const code = input.value.toUpperCase();
+
+        if (code === 'SAVE10') {
+          isDiscountActive = true;
+          msg.innerText = "✓ 10% discount applied!";
+          msg.className = "mt-4 text-xs font-bold uppercase tracking-widest success";
+          renderProducts(); // Update UI
+        } else if (code === '') {
+          isDiscountActive = false;
+          msg.innerText = "";
+          renderProducts();
+        } else {
+          isDiscountActive = false;
+          msg.innerText = "✕ Invalid promo code";
+          msg.className = "mt-4 text-xs font-bold uppercase tracking-widest error";
+          renderProducts();
+        }
+      }
+
+      function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+      }
+
+      function handleContact(e) {
+        e.preventDefault();
+        
+        // Go to Home (Top)
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Show Toast
+        showNotification("Sent", "Inquiry submitted successfully");
+        
+        e.target.reset();
+      }
+
+      window.onload = renderProducts;
+    </script>
+  </body>
+</html>
